@@ -16,3 +16,14 @@ export const getAllLaunchersById = async (id) =>{
 export const deleteLauncherById = async (id) => {
     return await launchers.findByIdAndDelete(id)
 }
+
+export const updateLauncherById = async (id,data) =>{
+    return await launchers.findByIdAndUpdate(
+        id,
+        data,
+        {
+            new: true,
+            runValidators: true
+        }
+    )
+}

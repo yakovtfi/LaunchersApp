@@ -7,5 +7,6 @@ router.get('/', launchersController.getAllLaunchers);
 router.get('/:id', launchersController.getAllLaunchersById);
 router.post('/', launchersController.createLauncher);
 router.delete('/:id', launchersController.deleteLauncherById);
+router.put ('/:id', launchersController.updateLauncherById)
 
 export default router;

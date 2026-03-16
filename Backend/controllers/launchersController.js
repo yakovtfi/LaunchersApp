@@ -45,3 +45,15 @@ export const deleteLauncherById = async (req,res) => {
     }
 
 }
+export const updateLauncherById = async (req, res) =>{
+    try{
+        const {id} =req.params;
+        const launchers = await launchersDAL.updateLauncherById(id, req.body)
+         if(!launchers){
+            return res.status(404).json({message: "Launcher not fond"})
+        }
+        res.status(200).json(launchers)
+    }catch(error){
+        res.status(500).json({message: error.message})
+    }
+}
