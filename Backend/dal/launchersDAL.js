@@ -14,5 +14,5 @@ export const getAllLaunchersById = async (id) =>{
 }
 
 export const deleteLauncherById = async (id) => {
-    return await launchers.findByIdEndDelete()
+    return await launchers.findByIdAndDelete(id)
 }
