@@ -86,6 +86,9 @@ const HomePage: React.FC = () => {
               <Link to={`/launcher/${launcher._id}`} className="ghost-button">
                 View details
               </Link>
+              <Link to={`/update/${launcher._id}`} className="primary-button">
+                Edit
+              </Link>
               <button
                 className="danger-button"
                 onClick={() => handleDelete(launcher._id)}

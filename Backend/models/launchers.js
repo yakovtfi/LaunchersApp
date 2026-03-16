@@ -7,6 +7,6 @@ const launchersSchema = mongoose.Schema({
     rocketType: { type: String, required: true },
     latitude: { type: Number, required: true },
     longitude: { type: Number, required: true }
-})
+}, { timestamps: true })
 
 export const launchers = mongoose.model('launchers',launchersSchema, 'launchers')
