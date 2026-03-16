@@ -222,7 +222,7 @@ button {
 		width: 100%;
 	}
 
-	.navbar__inner {
+	.navbar-inner {
 		flex-direction: column;
 		align-items: flex-start;
 	}
