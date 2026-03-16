@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Launcher } from '../types/types';
+import type { Launcher } from '../types/Launcher';
 
 interface LauncherStore {
   launchers: Launcher[];

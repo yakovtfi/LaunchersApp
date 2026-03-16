@@ -1,5 +1,5 @@
 export interface Launcher {
-    id: string;
+    _id ?: string;
     name: string;
     rocketType: string;
     latitude: number;
