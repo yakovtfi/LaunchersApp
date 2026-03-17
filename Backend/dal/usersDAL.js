@@ -24,6 +24,10 @@ export const getUserByEmail = async (email) => {
     return await users.findOne({ email });
 }
 
+export const getUserByUsername = async (username) => {
+    return await users.findOne({ username });
+}
+
 export const getUserById = async (id) => {
     return await users.findById(id);
 }

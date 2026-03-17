@@ -10,3 +10,5 @@ export const useLauncherStore = create<LauncherStore>((set) => ({
   launchers: [],
   setLaunchers: (launchers) => set({ launchers }),
 }));
+
+

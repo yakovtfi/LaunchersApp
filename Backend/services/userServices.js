@@ -26,8 +26,8 @@ export const getUserByEmail = async (email) => {
     return await usersDAL.getUserByEmail(email);
 }
 
-export const validateUserCredentials = async (email, password) => {
-    const user = await usersDAL.getUserByEmail(email);
+export const validateUserCredentials = async (identifier, password) => {
+    const user = await usersDAL.getUserByEmail(identifier) || await usersDAL.getUserByUsername(identifier);
     if (!user) return null;
     if (user.password !== password) return null;
     return user;
