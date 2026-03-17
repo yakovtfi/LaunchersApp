@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import api from "../api/axios";
 import type { Launcher } from "../types/Launcher";
 
+
 const HomePage: React.FC = () => {
   const [launchers, setLaunchers] = useState<Launcher[]>([]);
   const [cityQuery, setCityQuery] = useState("");
