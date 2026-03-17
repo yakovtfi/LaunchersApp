@@ -3,11 +3,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import type { Launcher } from "../types/Launcher";
 import { useLauncherStore } from "../store/useLauncherStore";
+import { useAuth } from "../store/useUsers";
 
 const PageDetailsLaunche: React.FC = () => {
   const params = useParams();
   const id = params.id as string | undefined;
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const launchers = useLauncherStore((s) => s.launchers);
   const setLaunchers = useLauncherStore((s) => s.setLaunchers);
@@ -53,6 +55,21 @@ const PageDetailsLaunche: React.FC = () => {
     }
   };
 
+  const handleDestroyedToggle = async () => {
+    if (!id || !launcher) return;
+    try {
+      const res = await api.put(`/launchers/${id}`, {
+        destroyed: !launcher.destroyed,
+      });
+      const updated = res.data as Launcher;
+      setLauncher(updated);
+      setLaunchers(launchers.map((l) => (l._id === id ? updated : l)));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update destroyed status");
+    }
+  };
+
   if (!launcher)
     return (
       <div className="app">
@@ -82,6 +99,10 @@ const PageDetailsLaunche: React.FC = () => {
           <div>{launcher.city}</div>
         </div>
         <div>
+          <strong>Status</strong>
+          <div>{launcher.destroyed ? "Destroyed" : "Active"}</div>
+        </div>
+        <div>
           <strong>Latitude</strong>
           <div>{launcher.latitude}</div>
         </div>
@@ -92,9 +113,16 @@ const PageDetailsLaunche: React.FC = () => {
       </section>
 
       <div className="details-actions">
-        <button className="danger-button" onClick={handleDelete}>
-          Delete launcher
-        </button>
+        {(user?.type_user === "admin" || user?.type_user === "intel") && (
+          <button className="danger-button" onClick={handleDelete}>
+            Delete launcher
+          </button>
+        )}
+        {(user?.type_user === "admin" || user?.type_user === "air_force" || user?.type_user === "user") && (
+          <button className="primary-button" onClick={handleDestroyedToggle}>
+            Mark as {launcher.destroyed ? "Active" : "Destroyed"}
+          </button>
+        )}
       </div>
     </div>
   );

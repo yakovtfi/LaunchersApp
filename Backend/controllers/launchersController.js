@@ -52,7 +52,7 @@ export const deleteLauncherById = async (req,res) => {
 export const updateLauncherById = async (req, res) =>{
     try{
         const {id} =req.params;
-        if (req.user?.user_type === 'air_force') {
+        if (req.user?.user_type === 'air_force' || req.user?.user_type === 'user') {
             const allowedKeys = ['destroyed'];
             const updates = Object.keys(req.body || {});
             const hasInvalid = updates.some((key) => !allowedKeys.includes(key));

@@ -1,4 +1,4 @@
-export type UserType = 'intel' | 'air_force' | 'admin';
+export type UserType = 'intel' | 'air_force' | 'admin' | 'user';
 
 export interface User {
     _id?: string;

@@ -36,11 +36,15 @@ const useAuthStore = create<UserStore>((set, get) => ({
       password,
     });
 
+    
+    console.log('login response:', data);
+
     localStorage.setItem("token", data.token);
 
     set({
       token: data.token,
-      user: normalizeUser(data.user)
+      user: normalizeUser(data.user),
+      loading: false,
     });
 
     return normalizeUser(data.user);

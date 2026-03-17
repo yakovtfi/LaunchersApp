@@ -86,7 +86,29 @@ button {
 	cursor: pointer;
 	transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+.logout-button{
+	border: none;
+	border-radius: 8px;
+	padding: 10px 20px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+	background: #2458ff;
+	color: #fff;
+	box-shadow: 0 8px 16px rgba(36, 88, 255, 0.2);
+}
+.logout-button:hover{
+	background: #1c43c3;
+	transform: translateY(-1px);
 
+}
+.span-user{
+	margin-top: 6px;
+	color: #52606d;
+	font-size: 14px;
+	padding: 20px;
+	font-weight: 800;
+}
 .primary-button {
 	background: #2458ff;
 	color: #fff;
@@ -210,6 +232,30 @@ button {
 	display: flex;
 	gap: 12px;
 	margin-top: 20px;
+}
+
+.actions-row {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.margin-top {
+	margin-top: 24px;
+}
+
+.card{
+	max-width: 720px;
+}
+
+.label {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.align-center {
+	align-self: center;
 }
 
 @media (max-width: 720px) {

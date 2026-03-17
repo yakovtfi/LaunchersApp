@@ -15,7 +15,7 @@ const usersSchema = mongoose.Schema({
     },
     user_type: {
         type:String,
-        enum:["intel", "air_force", "admin"],
+        enum:["intel", "air_force", "admin", "user"],
         require:true
     },
     last_login:{type:Date}

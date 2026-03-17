@@ -37,11 +37,11 @@ const Navbar: React.FC = () => {
           {!user && <NavLink to="/login">Login</NavLink>}
         </nav>
         <div className="user-info">
-          <button onClick={handleShowCurrentUser}>Current User</button>
+          <button className="logout-button" onClick={handleShowCurrentUser}>Current User</button>
           {user && (
             <>
-              <span>{user.username}</span>
-              <button onClick={handleLogout}>Logout</button>
+              <span className="span-user">{user.username}</span>
+              <button className="logout-button" onClick={handleLogout}>Logout</button>
             </>
           )}
         </div>

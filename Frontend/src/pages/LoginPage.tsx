@@ -53,13 +53,14 @@ const LoginPage:React.FC = () => {
                 required
                  />
                  <input 
-                 type="text"
+                 type="password"
                  name='password'
                  placeholder='Password'
                  value={formData.password}
                  onChange={handleChange}
                  required
                   />
+
             </div>
             {error && <p className='error-text'>{error}</p>}
             <button className='primary-button' type='submit' disabled={loading}>

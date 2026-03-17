@@ -2,9 +2,15 @@ import * as userServices from "../services/userServices.js"
 import * as usersDAL from "../dal/usersDAL.js";
 import { signToken } from "../utils/auth.js";
 
+
+
 export const registerUser = async (req, res) => {
 	try {
 		const { username, password, email, user_type } = req.body;
+		if(user_type === 'user'){
+		const user = await userServices.createUser({ username, password, email, user_type });
+		res.status(201).json({ message: 'User created', user: { id: user._id, username: user.username, email: user.email, user_type: user.user_type } });
+		}
 
 		const allUsers = await userServices.getAllUsers();
 		const existsSameType = allUsers.find(u => u.user_type === user_type);
