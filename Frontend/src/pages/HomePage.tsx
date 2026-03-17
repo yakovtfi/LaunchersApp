@@ -2,17 +2,22 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api/axios";
 import type { Launcher } from "../types/Launcher";
+import { useAuth } from "../store/useUsers";
 
 const HomePage: React.FC = () => {
+  const { user } = useAuth();
   const [launchers, setLaunchers] = useState<Launcher[]>([]);
   const [cityQuery, setCityQuery] = useState("");
   const [rocketFilter, setRocketFilter] = useState("all");
+  const [destroyedFilter, setDestroyedFilter] = useState("all");
 
   useEffect(() => {
     const fetchLaunchers = async () => {
       try {
         const response = await api.get("/launchers");
         setLaunchers(response.data);
+        console.log(response.data);
+        
       } catch (error) {
         console.error("Failed to load launchers", error);
       }
@@ -27,9 +32,13 @@ const HomePage: React.FC = () => {
         .includes(cityQuery.trim().toLowerCase());
       const matchesRocket =
         rocketFilter === "all" || launcher.rocketType === rocketFilter;
-      return matchesCity && matchesRocket;
+      const matchesDestroyed =
+        destroyedFilter === "all" ||
+        (destroyedFilter === "destroyed" && launcher.destroyed) ||
+        (destroyedFilter === "active" && !launcher.destroyed);
+      return matchesCity && matchesRocket && matchesDestroyed;
     });
-  }, [cityQuery, launchers, rocketFilter]);
+  }, [cityQuery, launchers, rocketFilter, destroyedFilter]);
 
   const handleDelete = async (id: string | undefined) => {
     const confirmed = window.confirm("Delete this launcher?");
@@ -50,9 +59,11 @@ const HomePage: React.FC = () => {
           <h1>Launchers</h1>
           <p className="meta">Browse, filter, and delete existing launchers.</p>
         </div>
-        <Link to="/add-launcher" className="primary-button">
-          Add launcher
-        </Link>
+        {(user?.type_user === "admin" || user?.type_user === "intel") && (
+          <Link to="/add-launcher" className="primary-button">
+            Add launcher
+          </Link>
+        )}
       </header>
 
       <section className="filters">
@@ -72,6 +83,14 @@ const HomePage: React.FC = () => {
           <option value="Radwan">Radwan</option>
           <option value="Kheibar">Kheibar</option>
         </select>
+        <select
+          value={destroyedFilter}
+          onChange={(event) => setDestroyedFilter(event.target.value)}
+        >
+          <option value="all">All statuses</option>
+          <option value="active">Not destroyed</option>
+          <option value="destroyed">Destroyed</option>
+        </select>
       </section>
 
       <section className="launcher-grid">
@@ -81,20 +100,27 @@ const HomePage: React.FC = () => {
               <h3>{launcher.name}</h3>
               <div className="meta">City: {launcher.city}</div>
               <div className="meta">Rocket: {launcher.rocketType}</div>
+              <div className="meta">
+                Status: {launcher.destroyed ? "Destroyed" : "Active"}
+              </div>
             </div>
             <div className="card-actions">
               <Link to={`/launcher/${launcher._id}`} className="ghost-button">
                 View details
               </Link>
-              <Link to={`/update/${launcher._id}`} className="primary-button">
-                Edit
-              </Link>
-              <button
-                className="danger-button"
-                onClick={() => handleDelete(launcher._id)}
-              >
-                Delete
-              </button>
+              {(user?.type_user === "admin" || user?.type_user === "intel") && (
+                <>
+                  <Link to={`/update/${launcher._id}`} className="primary-button">
+                    Edit
+                  </Link>
+                  <button
+                    className="danger-button"
+                    onClick={() => handleDelete(launcher._id)}
+                  >
+                    Delete
+                  </button>
+                </>
+              )}
             </div>
           </article>
         ))}

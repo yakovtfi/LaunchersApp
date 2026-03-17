@@ -5,4 +5,5 @@ export interface Launcher {
     latitude: number;
     longitude: number;
     city: string;
+    destroyed?: boolean;
 }

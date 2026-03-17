@@ -3,11 +3,13 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import api from "../api/axios";
 import type { Launcher } from "../types/Launcher";
 import { useLauncherStore } from "../store/useLauncherStore";
+import { useAuth } from "../store/useUsers";
 
 const UpdatePage: React.FC = () => {
   const params = useParams();
   const id = params.id as string | undefined;
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const launchers = useLauncherStore((s) => s.launchers);
   const setLaunchers = useLauncherStore((s) => s.setLaunchers);
@@ -19,6 +21,7 @@ const UpdatePage: React.FC = () => {
   const [latitude, setLatitude] = useState<string>("");
   const [longitude, setLongitude] = useState<string>("");
   const [city, setCity] = useState("");
+  const [destroyed, setDestroyed] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -52,6 +55,7 @@ const UpdatePage: React.FC = () => {
     setLatitude(String(launcher.latitude ?? ""));
     setLongitude(String(launcher.longitude ?? ""));
     setCity(launcher.city ?? "");
+    setDestroyed(Boolean(launcher.destroyed));
   }, [launcher]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -70,6 +74,7 @@ const UpdatePage: React.FC = () => {
       latitude: Number(latitude),
       longitude: Number(longitude),
       city: city.trim(),
+      destroyed,
     };
 
     try {
@@ -106,7 +111,7 @@ const UpdatePage: React.FC = () => {
   return (
     <div className="app">
       <h2>Update Launcher</h2>
-      <div className="form-card" style={{ maxWidth: 720 }}>
+      <div className="form-card card">
         <form onSubmit={handleSubmit} className="form-grid">
           <div>
             <label>Name</label>
@@ -158,11 +163,22 @@ const UpdatePage: React.FC = () => {
             />
           </div>
 
+          {(user?.type_user === "admin" || user?.type_user === "intel") && (
+            <label className="label">
+              <input
+                type="checkbox"
+                checked={destroyed}
+                onChange={(e) => setDestroyed(e.target.checked)}
+              />
+              Mark as destroyed
+            </label>
+          )}
+
           <div className="details-actions">
             <button className="primary-button" type="submit">
               Save
             </button>
-            <Link to={`/launcher/${id}`} className="ghost-button" style={{alignSelf: 'center'}}>
+            <Link to={`/launcher/${id}`} className="ghost-button align-center">
               Cancel
             </Link>
           </div>
